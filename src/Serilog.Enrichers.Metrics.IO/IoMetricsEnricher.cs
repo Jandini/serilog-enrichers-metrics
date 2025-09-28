@@ -5,22 +5,31 @@ using System.Runtime.InteropServices;
 
 namespace Serilog;
 
-public sealed class IoMetricsEnricher(TimeSpan? minSampleInterval = null) : ILogEventEnricher, IDisposable
+public sealed class IoMetricsEnricher : ILogEventEnricher, IDisposable
 {
-    private readonly TimeSpan _minSampleInterval = minSampleInterval ?? TimeSpan.FromSeconds(1);
+    private readonly TimeSpan _minSampleInterval;
     private readonly object _gate = new();
-    private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
-    private Metrics _last = Sample();
+
+    private Metrics _last;
+    private DateTime _lastAt;
+
+    public IoMetricsEnricher(TimeSpan? minSampleInterval = null)
+    {
+        _minSampleInterval = minSampleInterval ?? TimeSpan.FromSeconds(1);
+        _last = Sample();
+        _lastAt = DateTime.UtcNow;
+    }
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
         Metrics current;
         lock (_gate)
         {
-            if (_stopwatch.Elapsed >= _minSampleInterval)
+            var now = DateTime.UtcNow;
+            if (now - _lastAt >= _minSampleInterval)
             {
                 _last = Sample();
-                _stopwatch.Restart();
+                _lastAt = now;
             }
             current = _last;
         }

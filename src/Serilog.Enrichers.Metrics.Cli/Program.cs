@@ -8,9 +8,10 @@ using var serviceProvider = new ServiceCollection()
     .AddLogging(builder => builder.AddSerilog(new LoggerConfiguration()
         .Enrich.WithMachineName()
         .Enrich.WithIoMetrics()
+        .Enrich.WithMemoryMetrics(minSampleInterval: TimeSpan.FromSeconds(1))
         .WriteTo.Console(
             theme: AnsiConsoleTheme.Code,
-            outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u4}] [{SourceContext}] {Message} | Read Bytes {IoReadBytes:N0} | Write Bytes {IoWriteBytes:N0} | {Properties:j} {NewLine}{Exception}")
+            outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u4}] [{SourceContext}] {Message} | Read Bytes {IoReadBytes:N0} | Write Bytes {IoWriteBytes:N0} | Memory {WorkingSetBytes:N0} | {Properties:j} {NewLine}{Exception}")
         .CreateLogger()))
     .AddTransient<Main>()
     .BuildServiceProvider();
