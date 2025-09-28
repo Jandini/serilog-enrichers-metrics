@@ -7,61 +7,42 @@ namespace Serilog;
 
 public sealed class IoMetricsEnricher : ILogEventEnricher, IDisposable
 {
-    private readonly bool _emitDeltas;
     private readonly TimeSpan _minSampleInterval;
     private readonly object _gate = new();
 
-    private Metrics _baseline;
     private Metrics _last;
-    private DateTime _lastAt;
+    private readonly Stopwatch _stopwatch;
 
-    public IoMetricsEnricher(bool emitDeltas = false, TimeSpan? minSampleInterval = null)
+    public IoMetricsEnricher(TimeSpan? minSampleInterval = null)
     {
-        _emitDeltas = emitDeltas;
         _minSampleInterval = minSampleInterval ?? TimeSpan.Zero;
-
-        _baseline = Sample();
-        _last = _baseline;
-        _lastAt = DateTime.UtcNow;
+        _last = Sample();
+        _stopwatch = Stopwatch.StartNew();
     }
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
-        var now = DateTime.UtcNow;
         Metrics current;
         lock (_gate)
         {
-            if (now - _lastAt >= _minSampleInterval)
+            if (_stopwatch.Elapsed >= _minSampleInterval)
             {
                 _last = Sample();
-                _lastAt = now;
+                _stopwatch.Restart();
             }
             current = _last;
         }
 
         logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("IoReadBytes", current.ReadBytes));
         logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("IoWriteBytes", current.WriteBytes));
-
-        if (_emitDeltas)
-        {
-            var d = current - _baseline;
-            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("DeltaIoReadBytes", d.ReadBytes));
-            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("DeltaIoWriteBytes", d.WriteBytes));
-
-            _baseline = current; 
-        }
     }
 
     public void Dispose() { }
 
-    public static IDisposable PushToLogContext(bool emitDeltas = false, TimeSpan? minSampleInterval = null)
-        => Context.LogContext.Push(new IoMetricsEnricher(emitDeltas, minSampleInterval));
+    public static IDisposable PushToLogContext(TimeSpan? minSampleInterval = null)
+        => Context.LogContext.Push(new IoMetricsEnricher(minSampleInterval));
 
-    private readonly record struct Metrics(long ReadBytes, long WriteBytes)
-    {
-        public static Metrics operator -(Metrics a, Metrics b)
-            => new(a.ReadBytes - b.ReadBytes, a.WriteBytes - b.WriteBytes);
-    }
+    private readonly record struct Metrics(long ReadBytes, long WriteBytes);
 
     private static Metrics Sample()
     {
@@ -116,7 +97,6 @@ public sealed class IoMetricsEnricher : ILogEventEnricher, IDisposable
 
     private static Metrics Mac()
     {
-
         return default;
     }
 }
