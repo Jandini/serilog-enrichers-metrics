@@ -7,7 +7,7 @@ namespace Serilog;
 
 public sealed class IoMetricsEnricher(TimeSpan? minSampleInterval = null) : ILogEventEnricher, IDisposable
 {
-    private readonly TimeSpan _minSampleInterval = minSampleInterval ?? TimeSpan.Zero;
+    private readonly TimeSpan _minSampleInterval = minSampleInterval ?? TimeSpan.FromSeconds(1);
     private readonly object _gate = new();
     private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
     private Metrics _last = Sample();
