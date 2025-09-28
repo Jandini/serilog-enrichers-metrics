@@ -5,20 +5,12 @@ using System.Runtime.InteropServices;
 
 namespace Serilog;
 
-public sealed class IoMetricsEnricher : ILogEventEnricher, IDisposable
+public sealed class IoMetricsEnricher(TimeSpan? minSampleInterval = null) : ILogEventEnricher, IDisposable
 {
-    private readonly TimeSpan _minSampleInterval;
+    private readonly TimeSpan _minSampleInterval = minSampleInterval ?? TimeSpan.Zero;
     private readonly object _gate = new();
-
-    private Metrics _last;
-    private readonly Stopwatch _stopwatch;
-
-    public IoMetricsEnricher(TimeSpan? minSampleInterval = null)
-    {
-        _minSampleInterval = minSampleInterval ?? TimeSpan.Zero;
-        _last = Sample();
-        _stopwatch = Stopwatch.StartNew();
-    }
+    private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
+    private Metrics _last = Sample();
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
