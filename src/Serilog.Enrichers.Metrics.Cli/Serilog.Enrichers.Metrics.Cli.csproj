@@ -21,4 +21,8 @@
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
 		<PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Serilog.Enrichers.Metrics.IO\Serilog.Enrichers.Metrics.IO.csproj" />
+	  <ProjectReference Include="..\Serilog.Enrichers.Metrics.Memory\Serilog.Enrichers.Metrics.Memory.csproj" />
+	</ItemGroup>
 </Project>

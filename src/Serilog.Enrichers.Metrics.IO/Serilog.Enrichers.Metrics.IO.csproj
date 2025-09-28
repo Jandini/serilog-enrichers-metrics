@@ -1,10 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<LangVersion>10</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -20,19 +19,21 @@
 		<PackageId>Serilog.Enrichers.Metrics.IO</PackageId>
 		<AssemblyName>Serilog.Enrichers.Metrics.IO</AssemblyName>
 		<RootNamespace>Serilog.Enrichers.Metrics.IO</RootNamespace>
-		<Description>This Serilog enricher provides IO read/write operation metrics for the current process. It is extremely helpful for applications where tracking data throughput is important.</Description>
+		<Description>This Serilog enricher provides IO read/write operation metrics for the current process.</Description>
 		<PackageTags>serilog;enricher;metrics;io;read;write;monitoring;logging</PackageTags>
 		<RepositoryUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.IO</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.IO</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\icon.png" Pack="true" PackagePath=""/>
+		<None Include="..\..\icon.png" Pack="true" PackagePath="" />
 		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
-		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Serilog" Version="4.3.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" PrivateAssets="all" />
 		<PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

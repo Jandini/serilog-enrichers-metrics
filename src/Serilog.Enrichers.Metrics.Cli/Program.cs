@@ -7,9 +7,10 @@ using Serilog.Sinks.SystemConsole.Themes;
 using var serviceProvider = new ServiceCollection()
     .AddLogging(builder => builder.AddSerilog(new LoggerConfiguration()
         .Enrich.WithMachineName()
+        .Enrich.WithIoMetrics()
         .WriteTo.Console(
             theme: AnsiConsoleTheme.Code,
-            outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u4}] [{MachineName}] [{SourceContext}] {Message}{NewLine}{Exception}")
+            outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u4}] [{SourceContext}] {Message} | Read Bytes {IoReadBytes:N0} | Write Bytes {IoWriteBytes:N0} | {Properties:j} {NewLine}{Exception}")
         .CreateLogger()))
     .AddTransient<Main>()
     .BuildServiceProvider();
