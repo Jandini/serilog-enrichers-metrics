@@ -35,9 +35,9 @@ jobs:
       run: dotnet restore
       
     - name: Pack
-      run: dotnet pack --no-restore -c:Release
+      run: dotnet pack --no-restore -c:Release --output nugets
     
     - name: Push
       # Push packages into private github repository 
       if: github.ref == 'refs/heads/main'
-      run: dotnet nuget push "../bin/Release/*.nupkg" -k ${{ secrets.PACKAGE_REGISTRY_TOKEN }} -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --skip-duplicate
+      run: dotnet nuget push "nugets/*.nupkg" -k ${{ secrets.PACKAGE_REGISTRY_TOKEN }} -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --skip-duplicate
