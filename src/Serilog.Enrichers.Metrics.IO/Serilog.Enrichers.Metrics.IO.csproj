@@ -20,8 +20,8 @@
 		<PackageId>Serilog.Enrichers.Metrics.IO</PackageId>
 		<AssemblyName>Serilog.Enrichers.Metrics.IO</AssemblyName>
 		<RootNamespace>Serilog.Enrichers.Metrics.IO</RootNamespace>
-		<Description>Serilog.Enrichers.Metrics.IO</Description>
-		<PackageTags>Serilog.Enrichers.Metrics.IO</PackageTags>
+		<Description>This Serilog enricher provides IO read/write operation metrics for the current process. It is extremely helpful for applications where tracking data throughput is important.</Description>
+		<PackageTags>serilog;enricher;metrics;io;read;write;monitoring;logging</PackageTags>
 		<RepositoryUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.IO</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.IO</PackageProjectUrl>
 	</PropertyGroup>
