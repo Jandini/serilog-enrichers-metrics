@@ -23,7 +23,6 @@
 		<PackageTags>serilog;enricher;metrics;io;read;write;monitoring;logging</PackageTags>
 		<RepositoryUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.IO</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.IO</PackageProjectUrl>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<ItemGroup>
