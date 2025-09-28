@@ -24,5 +24,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Serilog.Enrichers.Metrics.IO\Serilog.Enrichers.Metrics.IO.csproj" />
 	  <ProjectReference Include="..\Serilog.Enrichers.Metrics.Memory\Serilog.Enrichers.Metrics.Memory.csproj" />
+	  <ProjectReference Include="..\Serilog.Enrichers.Metrics.Stopwatch\Serilog.Enrichers.Metrics.Stopwatch.csproj" />
 	</ItemGroup>
 </Project>
