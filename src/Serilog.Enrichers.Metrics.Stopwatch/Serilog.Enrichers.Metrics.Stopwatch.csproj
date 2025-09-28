@@ -19,7 +19,7 @@
 		<PackageId>Serilog.Enrichers.Metrics.Stopwatch</PackageId>
 		<AssemblyName>Serilog.Enrichers.Metrics.Stopwatch</AssemblyName>
 		<RootNamespace>Serilog.Enrichers.Metrics.Stopwatch</RootNamespace>
-		<Description>This Serilog enricher adds a Stopwatch property to log events, useful for tracking elapsed time. Optionally includes milliseconds.</Description>
+		<Description>This Serilog enricher adds a Stopwatch property to log events, useful for tracking elapsed time.</Description>
 		<PackageTags>serilog;enricher;metrics;stopwatch;elapsed;timing;logging</PackageTags>
 		<RepositoryUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.Stopwatch</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.Stopwatch</PackageProjectUrl>

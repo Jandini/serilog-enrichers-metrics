@@ -19,7 +19,7 @@
 		<PackageId>Serilog.Enrichers.Metrics.Memory</PackageId>
 		<AssemblyName>Serilog.Enrichers.Metrics.Memory</AssemblyName>
 		<RootNamespace>Serilog.Enrichers.Metrics.Memory</RootNamespace>
-		<Description>This Serilog enricher provides memory usage metrics for the current process. It is extremely helpful for applications where low memory consumption is key.</Description>
+		<Description>This Serilog enricher provides memory usage metrics for the current process. </Description>
 		<PackageTags>serilog;enricher;metrics;memory;usage;monitoring;logging</PackageTags>
 		<RepositoryUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.Memory</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Jandini/Serilog.Enrichers.Metrics.Memory</PackageProjectUrl>
