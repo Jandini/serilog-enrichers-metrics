@@ -82,18 +82,38 @@ public sealed class IoMetricsEnricher : ILogEventEnricher, IDisposable
 
     private static Metrics Linux()
     {
-        string path = $"/proc/{Environment.ProcessId}/io";
-        if (!File.Exists(path)) return default;
-
-        long read = 0, write = 0;
-        foreach (var line in File.ReadLines(path))
+        try
         {
-            if (line.StartsWith("read_bytes:"))
-                read = long.Parse(line.AsSpan("read_bytes:".Length).Trim());
-            else if (line.StartsWith("write_bytes:"))
-                write = long.Parse(line.AsSpan("write_bytes:".Length).Trim());
+            string path = $"/proc/{Environment.ProcessId}/io";
+            if (!File.Exists(path)) return default;
+
+            long rchar = 0, wchar = 0;
+            long readBytes = 0, writeBytes = 0;
+            
+            foreach (var line in File.ReadLines(path))
+            {
+                if (line.StartsWith("rchar:"))
+                    rchar = long.Parse(line.AsSpan("rchar:".Length).Trim());
+                else if (line.StartsWith("wchar:"))
+                    wchar = long.Parse(line.AsSpan("wchar:".Length).Trim());
+                else if (line.StartsWith("read_bytes:"))
+                    readBytes = long.Parse(line.AsSpan("read_bytes:".Length).Trim());
+                else if (line.StartsWith("write_bytes:"))
+                    writeBytes = long.Parse(line.AsSpan("write_bytes:".Length).Trim());
+            }
+            
+            // Use rchar/wchar (includes all I/O including console) instead of read_bytes/write_bytes (disk only)
+            // This ensures console writes are properly tracked in WSL/Linux environments
+            return new(rchar, wchar);
         }
-        return new(read, write);
+        catch (UnauthorizedAccessException)
+        {
+            return default;
+        }
+        catch (IOException)
+        {
+            return default;
+        }
     }
 
     private static Metrics Mac()
